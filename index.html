@@ -24,6 +24,24 @@
       overflow-x: hidden;
     }
 
+    /* Top Banner */
+    .top-banner {
+      width: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .top-banner img {
+      width: 100%;
+      max-width: 1200px;
+      height: auto;
+      display: block;
+    }
+
     /* Floating Side Menu */
     .side-menu {
       position: fixed;
@@ -37,6 +55,20 @@
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
+    }
+
+    .menu-logo {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    .menu-logo img {
+      width: 100%;
+      max-width: 120px;
+      height: auto;
+      filter: brightness(1.1);
     }
 
     @keyframes breathePulse {
@@ -847,6 +879,15 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+      /* Top banner scales on mobile */
+      .top-banner {
+        padding: 10px;
+      }
+
+      .top-banner img {
+        max-width: 100%;
+      }
+
       /* Move side menu to bottom on mobile */
       .side-menu {
         position: fixed;
@@ -861,6 +902,25 @@
         max-width: 90%;
         z-index: 1001;
         background: rgba(0, 0, 0, 0.9);
+      }
+
+      /* Logo moves to top on mobile */
+      .menu-logo {
+        position: fixed;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1002;
+        margin: 0;
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .menu-logo img {
+        max-width: 100px;
       }
 
       .side-menu nav {
@@ -899,8 +959,9 @@
         transform: scale(1.2);
       }
 
-      /* Add padding to bottom of page for fixed menu */
+      /* Add padding to top and bottom for fixed elements */
       body {
+        padding-top: 0;
         padding-bottom: 80px;
       }
 
@@ -980,6 +1041,14 @@
         height: 10px;
       }
 
+      .menu-logo {
+        padding: 8px 15px;
+      }
+
+      .menu-logo img {
+        max-width: 80px;
+      }
+
       .team-photo {
         width: 80px;
         height: 80px;
@@ -1000,8 +1069,16 @@
   <div class="breath-indicator"></div>
   <div class="ambient-glow"></div>
 
+  <!-- Top Banner Image -->
+  <div class="top-banner">
+    <img src="Images/main.png" alt="Viscereality Project">
+  </div>
+
   <!-- Floating Side Menu -->
   <div class="side-menu">
+    <div class="menu-logo">
+      <img src="Images/logo.png" alt="Viscereality Logo">
+    </div>
     <nav>
       <a href="#hero" class="active">Overview</a>
       <a href="#explainers">Explainers</a>
@@ -1022,7 +1099,7 @@
         <div class="breath-wave exhale-wave"></div>
         <div class="breath-light"></div>
         <div class="video-container">
-          <iframe src="https://www.youtube.com/embed/TBcWh4R4wck?autoplay=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&mute=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+          <iframe src="https://www.youtube.com/embed/TBcWh4R4wck?autoplay=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&mute=1&vq=hd1080&hd=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
         </div>
       </div>
 
@@ -1053,13 +1130,13 @@
       <div class="video-grid">
         <div class="explainer-video inhale-section">
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/Qm-lmC-xYCI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/Qm-lmC-xYCI?vq=hd1080&hd=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
           <p class="video-caption">5-Minute Project Overview</p>
         </div>
         <div class="explainer-video exhale-section">
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/zi28hQTSoS8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/zi28hQTSoS8?vq=hd1080&hd=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
           <p class="video-caption">Extended Explainer</p>
         </div>

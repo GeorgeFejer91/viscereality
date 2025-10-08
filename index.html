@@ -148,7 +148,7 @@
       width: 100%;
     }
 
-    /* Hero Section - contains video + all text */
+    /* Hero Section */
     #hero {
       position: relative;
     }
@@ -168,7 +168,7 @@
       z-index: 2;
     }
 
-    .video-container iframe {
+    .video-container iframe, .video-container video {
       position: absolute;
       top: 0;
       left: 0;
@@ -451,6 +451,93 @@
       }
     }
 
+    /* Collaborations Section */
+    .collaboration-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .collaboration-card {
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      border-left: 3px solid rgba(255, 255, 255, 0.5);
+      text-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+    }
+
+    .collaboration-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .collaboration-logo {
+      flex-shrink: 0;
+    }
+
+    .collaboration-logo img {
+      width: 120px;
+      height: auto;
+      filter: brightness(1.1);
+    }
+
+    .collaboration-header h3 {
+      font-size: 1.6em;
+      color: #fff;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .collaboration-body {
+      margin-bottom: 30px;
+    }
+
+    .collaboration-body p {
+      margin-bottom: 15px;
+      line-height: 1.7;
+      font-size: 0.95em;
+    }
+
+    .collaboration-body strong {
+      color: rgba(0, 99, 156, 1);
+    }
+
+    .collaboration-body em {
+      color: rgba(162, 111, 25, 1);
+    }
+
+    .collaboration-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .gallery-item {
+      text-align: center;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-item .caption {
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
     /* Team Section */
     .team-grid {
       display: grid;
@@ -522,15 +609,6 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-    }
-
-    @keyframes photoGlow {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(0, 99, 156, 0.4);
-      }
-      50% {
-        box-shadow: 0 0 30px rgba(162, 111, 25, 0.5);
-      }
     }
 
     .team-member h3 {
@@ -606,19 +684,6 @@
       box-shadow: 0 0 15px rgba(67, 189, 125, 0.5);
     }
 
-    .social-link.mesmerprism img {
-      filter: brightness(0) invert(1);
-    }
-
-    .social-link.mesmerprism:hover {
-      border-color: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-    }
-
-    .social-link.mesmerprism:hover img {
-      filter: brightness(1.2) invert(1);
-    }
-
     .social-link.email:hover {
       border-color: rgba(180, 80, 80, 0.8);
       box-shadow: 0 0 15px rgba(180, 80, 80, 0.5);
@@ -631,6 +696,23 @@
     .social-link.github:hover {
       border-color: rgba(138, 43, 226, 0.8);
       box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    }
+
+    .social-link.github:hover img {
+      filter: brightness(1.2) invert(1);
+    }
+
+    .social-link.mesmerprism img {
+      filter: brightness(0) invert(1);
+    }
+
+    .social-link.mesmerprism:hover {
+      border-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .social-link.mesmerprism:hover img {
+      filter: brightness(1.2) invert(1);
     }
 
     .social-link.website:hover {
@@ -695,10 +777,6 @@
     }
 
     /* Explainer Videos Section */
-    .explainer-intro {
-      margin-bottom: 30px;
-    }
-
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1000,12 +1078,7 @@
         transform: scale(1.4);
       }
 
-      .side-menu a:active {
-        transform: scale(1.2);
-      }
-
       body {
-        padding-top: 0;
         padding-bottom: 80px;
       }
 
@@ -1025,65 +1098,13 @@
         grid-template-columns: 1fr;
       }
 
-      .logos-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+      .collaboration-header {
+        flex-direction: column;
+        text-align: center;
       }
 
-      .team-photo {
+      .collaboration-logo img {
         width: 100px;
-        height: 100px;
-      }
-
-      .social-links {
-        gap: 10px;
-      }
-
-      .social-link {
-        width: 36px;
-        height: 36px;
-        padding: 6px;
-      }
-
-      .ingredient-card h4 {
-        font-size: 1em;
-      }
-
-      .contact-email {
-        font-size: 1.1em;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h2 {
-        font-size: 1.5em;
-      }
-
-      .side-menu {
-        padding: 10px 15px;
-      }
-
-      .side-menu nav {
-        gap: 12px;
-      }
-
-      .side-menu a {
-        width: 10px;
-        height: 10px;
-      }
-
-      .team-photo {
-        width: 80px;
-        height: 80px;
-      }
-
-      .social-link {
-        width: 32px;
-        height: 32px;
-      }
-
-      section {
-        padding: 40px 10px;
       }
     }
   </style>
@@ -1104,6 +1125,7 @@
       <a href="#hero" class="active">Overview</a>
       <a href="#explainers">Explainers</a>
       <a href="#research">Research</a>
+      <a href="#collaborations">Collaborations</a>
       <a href="#team">Team</a>
       <a href="#publications">Publications</a>
       <a href="#advisory">Advisory</a>
@@ -1209,6 +1231,47 @@
     </div>
   </section>
 
+  <section id="collaborations">
+    <div class="section-content">
+      <h2>Collaborations</h2>
+      <div class="collaboration-grid">
+        <div class="collaboration-card inhale-section">
+          <div class="collaboration-header">
+            <div class="collaboration-logo">
+              <img src="Images/QRI_HEART/QRI_heart_logo.png" alt="QRI HEART Logo">
+            </div>
+            <h3>Qualia Research Institute – HEART Workshop</h3>
+          </div>
+
+          <div class="collaboration-body">
+            <p>
+              The <strong>QRI HEART Workshop</strong>, held in Tepoztlán in 2024, provided valuable developer feedback
+              and inspiration, offering a creative space that helped shape the aesthetic and technical direction of
+              the Viscereality Project. The collaboration focused on bridging <span class="inhale-term">computational neuroscience</span> and
+              <span class="exhale-term">experiential design</span>.
+            </p>
+            <p>
+              <strong>Andrés Gómez Emilsson</strong> contributed the <em>coupling kernel paradigm</em> that underpins the oscillatory
+              dynamics at the core of the system — a central theoretical and computational model guiding the bioresponsive
+              synchronization of virtual and physiological rhythms.
+            </p>
+          </div>
+
+          <div class="collaboration-gallery">
+            <div class="gallery-item">
+              <img src="Images/QRI_HEART/AndresGomez.png" alt="Andrés Gómez Emilsson">
+              <p class="caption">Andrés Gómez Emilsson</p>
+            </div>
+            <div class="gallery-item">
+              <img src="Images/QRI_HEART/SymmetricVision.png" alt="Symmetric Vision">
+              <p class="caption">Symmetric Vision (Visual Identity)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="team">
     <div class="section-content">
       <h2>Meet the Team</h2>
@@ -1219,7 +1282,7 @@
           </div>
           <h3>George Fejer</h3>
           <p class="role"><span class="inhale-term">Corresponding Author</span></p>
-          <p>George Fejer is a PhD candidate in Cognitive Psychology at the University of Konstanz, an affiliate of the Centre for the Advanced Study of Collective Behaviour, and a research affiliate at the Max Planck Institute for Human Cognitive and Brain Sciences. He is the lead author of the project's scientific concept and grant application, awarded by the BIAL Foundation for the implementation of this project.</p>
+          <p>George Fejer is a PhD candidate in Cognitive Psychology at the University of Konstanz, an affiliate of the Centre for the Advanced Study of Collective Behaviour, and a research affiliate at the Max Planck Institute for Human Cognitive and Brain Sciences.</p>
           <div class="social-links">
             <a href="https://scholar.google.com/citations?user=GPARoloAAAAJ&hl=de&oi=sra" target="_blank" class="social-link scholar" title="Google Scholar">
               <img src="Logo_SVG/googlescholar.svg" alt="Scholar">
@@ -1230,7 +1293,7 @@
             <a href="https://www.linkedin.com/in/george-fejer1/" target="_blank" class="social-link linkedin" title="LinkedIn">
               <img src="Logo_SVG/LinkedIn.svg" alt="LinkedIn">
             </a>
-            <a href="mailto:george.feje@aliusresearch.org" class="social-link email" title="Email">
+            <a href="mailto:george.fejer@aliusresearch.org" class="social-link email" title="Email">
               <img src="Logo_SVG/email_icon.svg" alt="Email">
             </a>
           </div>
@@ -1242,7 +1305,7 @@
           </div>
           <h3>Till Holzapfel</h3>
           <p class="role"><span class="exhale-term">VR Developer</span></p>
-          <p>Till Holzapfel obtained a Master's in Cognitive Science from the University of Osnabrück, and worked as a lab manager for Intangible Realities Lab of Dr. David Glowacki. His work is dedicated to designing immersive VR for facilitating transformative experiences that deepen our scientific understanding of consciousness.</p>
+          <p>Till Holzapfel obtained a Master's in Cognitive Science from the University of Osnabrück, and worked as a lab manager for Intangible Realities Lab. His work is dedicated to designing immersive VR for facilitating transformative experiences.</p>
           <div class="social-links">
             <a href="https://orcid.org/0009-0002-7477-0844" target="_blank" class="social-link orcid" title="ORCID">
               <img src="Logo_SVG/ORCID_logo.svg" alt="ORCID">
@@ -1268,7 +1331,7 @@
           </div>
           <h3>Taru Hirvonen</h3>
           <p class="role"><span class="inhale-term">VR Developer / Researcher</span></p>
-          <p>Taru Hirvonen provided invaluable guidance on integrating spatio-temporal oscillation dynamics into particles, enabling them to move in response to lung dynamics while maintaining spatial relationships and interactions with one another.</p>
+          <p>Taru Hirvonen provided invaluable guidance on integrating spatio-temporal oscillation dynamics into particles, enabling them to move in response to lung dynamics.</p>
           <div class="social-links">
             <a href="https://taru-u.github.io/apps/symmetry/" target="_blank" class="social-link github" title="GitHub Portfolio">
               <img src="Logo_SVG/github.svg" alt="GitHub">
@@ -1288,7 +1351,7 @@
           </div>
           <h3>Anestis Lalidis Mateo</h3>
           <p class="role"><span class="exhale-term">Computer Scientist / VR Developer</span></p>
-          <p>Anestis Lalidis Mateo is a Master's student and Research Assistant in Computer Science at the University of Applied Sciences and Arts Bielefeld at the Institute for Building Intelligence, specializing in Human-Computer Interaction and Audiovisual Computing. His research focuses on VR/XR, biofeedback, and altered states of consciousness, with projects including VR-based experiments on hallucinatory experiences and the development of interactive interfaces for their representation.</p>
+          <p>Anestis Lalidis Mateo is a Master's student and Research Assistant in Computer Science, specializing in Human-Computer Interaction and Audiovisual Computing with focus on VR/XR and biofeedback.</p>
           <div class="social-links">
             <a href="https://orcid.org/0009-0002-9545-9043" target="_blank" class="social-link orcid" title="ORCID">
               <img src="Logo_SVG/ORCID_logo.svg" alt="ORCID">
@@ -1337,7 +1400,7 @@
           </div>
           <h3>Bigna Lenggenhager</h3>
           <p class="role"><span class="inhale-term">Cognitive Neuropsychologist | Co-Principal Investigator</span></p>
-          <p>Bigna Lenggenhager has several years of experience, having worked as a professor at the Universities of Zurich and Konstanz, with her research focusing on body-swap illusions and the plasticity of the bodily self. She completed her PhD in Neuroscience at EPFL in Lausanne and undertook postdoctoral research in Rome and Bern before becoming a junior group leader at the University Hospital Zurich. Her research centered on multisensory integration, the bodily self, and embodied cognition in both health and pathology. She extensively applied virtual and augmented reality techniques, integrating them with psychological and neuroscientific methods.</p>
+          <p>Bigna Lenggenhager has several years of experience, having worked as a professor at the Universities of Zurich and Konstanz, with her research focusing on body-swap illusions and the plasticity of the bodily self.</p>
           <div class="social-links">
             <a href="https://scholar.google.com/citations?user=pgLjsPEAAAAJ&hl=de&oi=ao" target="_blank" class="social-link scholar" title="Google Scholar">
               <img src="Logo_SVG/googlescholar.svg" alt="Scholar">
@@ -1360,9 +1423,11 @@
           </div>
           <h3>Michael Gaebler</h3>
           <p class="role"><span class="exhale-term">Cognitive and Brain Scientist</span></p>
-          <p>Michael Gaebler is a cognitive neuroscientist at the Max Planck Institute for Human Cognitive and Brain Sciences in Leipzig (Department of Neurology) and leads the Mind-Body-Emotion Group, which is based both in Leipzig and at the Max Planck Dahlem Campus of Cognition in Berlin. His research explores the relationship between mental processes—such as thoughts and emotions—and brain-body interactions, with a particular focus on brain-heart dynamics in both health and pathology. The group employs psychophysiological and neuroimaging techniques, conducting studies in classical laboratory settings as well as in real-world and naturalistic environments, including immersive virtual reality.</p>
+          <p>Michael Gaebler is a cognitive neuroscientist at the Max Planck Institute and leads the Mind-Body-Emotion Group. His research explores the relationship between mental processes and brain-body interactions.</p>
           <div class="social-links">
-            <a href="https://www.cbs.mpg.de/en/person/51292/15468" target="_blank" class="social-link website" title="Personal Website" style="font-size: 20px; font-weight: bold; color: rgba(255, 255, 255, 0.8);">🌐</a>
+            <a href="https://www.cbs.mpg.de/en/person/51292/15468" target="_blank" class="social-link website" title="Personal Website">
+              <img src="Logo_SVG/website.svg" alt="Website">
+            </a>
             <a href="https://scholar.google.com/citations?user=cml7waMAAAAJ&hl=de&oi=ao" target="_blank" class="social-link scholar" title="Google Scholar">
               <img src="Logo_SVG/googlescholar.svg" alt="Scholar">
             </a>
@@ -1384,7 +1449,7 @@
           </div>
           <h3>Oliver Deussen</h3>
           <p class="role"><span class="inhale-term">Professor for Visual Computing | Principal Investigator</span></p>
-          <p>Oliver Deussen is a professor of Visual Computing at the University of Konstanz and a speaker of the Excellence Cluster, the Centre for the Advanced Study of Collective Behavior. His research focuses on modeling and rendering complex systems, non-photorealistic rendering, and information visualization. He has contributed to key areas such as geometry processing and image-based modeling.</p>
+          <p>Oliver Deussen is a professor of Visual Computing at the University of Konstanz and a speaker of the Excellence Cluster. His research focuses on modeling and rendering complex systems.</p>
           <div class="social-links">
             <a href="https://orcid.org/0000-0001-5803-2185" target="_blank" class="social-link orcid" title="ORCID">
               <img src="Logo_SVG/ORCID_logo.svg" alt="ORCID">
@@ -1401,7 +1466,7 @@
           </div>
           <h3>Johannes Blum</h3>
           <p class="role"><span class="exhale-term">VR Developer / Consultant</span></p>
-          <p>Johannes Blum is the Head of Research and Development at the Pädagogische Hochschule Schaffhausen, with a background in psychology and digital mental health. He previously worked on the development of Flowborne VR, a meditative breathwork experience enhanced by biofeedback, designed to promote deep relaxation through diaphragmatic breathing.</p>
+          <p>Johannes Blum is the Head of Research and Development at the Pädagogische Hochschule Schaffhausen. He previously worked on the development of Flowborne VR, a meditative breathwork experience.</p>
           <div class="social-links">
             <a href="https://scholar.google.com/citations?user=C6xOMkwAAAAJ&hl=de&oi=sra" target="_blank" class="social-link scholar" title="Google Scholar">
               <img src="Logo_SVG/googlescholar.svg" alt="Scholar">
@@ -1478,7 +1543,7 @@
       
       showSectionsSequentially();
 
-      const observerSections = document.querySelectorAll('.team-member, .publication-item, .advisory-member, .contact-card, .explainer-video, .funding-card');
+      const observerSections = document.querySelectorAll('.team-member, .publication-item, .advisory-member, .contact-card, .explainer-video, .funding-card, .collaboration-card, .ingredient-card');
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {

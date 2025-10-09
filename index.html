@@ -55,6 +55,26 @@
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .side-menu::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .side-menu::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    .side-menu::-webkit-scrollbar-thumb {
+      background: rgba(0, 99, 156, 0.6);
+      border-radius: 3px;
+    }
+
+    .side-menu::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 99, 156, 0.8);
     }
 
     .menu-logo {
@@ -99,6 +119,9 @@
       border-radius: 5px;
       font-size: 14px;
       position: relative;
+      line-height: 1.3;
+      text-align: center;
+      justify-content: flex-start;
     }
 
     .side-menu a::before {
@@ -818,6 +841,15 @@
     .social-link.website:hover {
       border-color: rgba(100, 200, 255, 0.8);
       box-shadow: 0 0 15px rgba(100, 200, 255, 0.5);
+    }
+
+    .social-link.website svg {
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+
+    .social-link.website:hover svg {
+      color: rgba(100, 200, 255, 1);
     }
 
     .profile-link {

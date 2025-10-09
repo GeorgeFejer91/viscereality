@@ -1167,9 +1167,9 @@
       .side-menu {
         position: fixed;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, 0);
         right: auto;
-        bottom: 15px;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 15px);
         top: auto;
         padding: 12px 20px;
         animation: none;
@@ -1182,6 +1182,7 @@
       .side-menu nav {
         flex-direction: row;
         justify-content: center;
+        align-items: center;
         gap: 15px;
       }
 
@@ -1197,7 +1198,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
+        flex: 0 0 12px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, border-color 0.3s ease;
       }
 
       .side-menu a::before {
@@ -1208,7 +1210,7 @@
         background: rgba(0, 99, 156, 0.9);
         border-color: rgba(0, 99, 156, 1);
         box-shadow: 0 0 15px rgba(0, 99, 156, 0.8);
-        transform: scale(1.4);
+        transform: none;
       }
 
       body {
@@ -1405,7 +1407,7 @@
             <img src="People/TillHolzapfel.png" alt="Till Holzapfel" class="team-image">
           </div>
           <h3>Till Holzapfel</h3>
-          <p class="role"><span class="exhale-term">VR Developer</span></p>
+          <p class="role"><span class="exhale-term">Lead VR Developer</span></p>
           <p>Till Holzapfel obtained a Master's in Cognitive Science from the University of Osnabrück, and worked as a lab manager for Intangible Realities Lab. His work is dedicated to designing immersive VR for facilitating transformative experiences.</p>
           <div class="social-links">
             <a href="https://orcid.org/0009-0002-7477-0844" target="_blank" class="social-link orcid" title="ORCID">
@@ -1431,7 +1433,7 @@
             <img src="People/TaruHirvonen.png" alt="Taru Hirvonen" class="team-image">
           </div>
           <h3>Taru Hirvonen</h3>
-          <p class="role"><span class="inhale-term">VR Developer / Researcher</span></p>
+          <p class="role"><span class="inhale-term">VR Developer / Computer Scientist</span></p>
           <p>Taru Hirvonen provided invaluable guidance on integrating spatio-temporal oscillation dynamics into particles, enabling them to move in response to lung dynamics.</p>
           <div class="social-links">
             <a href="https://taru-u.github.io/apps/symmetry/" target="_blank" class="social-link github" title="GitHub Portfolio">
@@ -1451,7 +1453,7 @@
             <img src="People/AnestisLalidisMateo.png" alt="Anestis Lalidis Mateo" class="team-image">
           </div>
           <h3>Anestis Lalidis Mateo</h3>
-          <p class="role"><span class="exhale-term">Computer Scientist / VR Developer</span></p>
+          <p class="role"><span class="exhale-term">VR Developer / Computer Scientist</span></p>
           <p>Anestis Lalidis Mateo is a Master's student and Research Assistant in Computer Science, specializing in Human-Computer Interaction and Audiovisual Computing with focus on VR/XR and biofeedback.</p>
           <div class="social-links">
             <a href="https://orcid.org/0009-0002-9545-9043" target="_blank" class="social-link orcid" title="ORCID">
@@ -1701,7 +1703,7 @@
       <div class="contact-info">
         <div class="contact-card inhale-section">
           <p class="contact-email">
-            <a href="mailto:viscereality@aliusresearch.org" class="email-link">viscereality@aliusresearch.org</a>
+            <a href="mailto:contact@viscereality.org" class="email-link">contact@viscereality.org</a>
           </p>
         </div>
       </div>

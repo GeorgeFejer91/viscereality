@@ -504,6 +504,67 @@
       line-height: 1.6;
     }
 
+    /* ORB VISUALIZATION STYLES */
+    .orb-visualization {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .orb-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateOrb 40s infinite linear;
+      will-change: transform;
+    }
+
+    @keyframes rotateOrb {
+      from { transform: rotateY(0deg) rotateX(10deg); }
+      to { transform: rotateY(360deg) rotateX(10deg); }
+    }
+
+    .orb-particle {
+      position: absolute;
+      border-radius: 50%;
+      transform-style: preserve-3d;
+      will-change: transform;
+      background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 40%,
+        currentColor 60%,
+        currentColor 90%,
+        rgba(255, 255, 255, 0) 100%);
+    }
+
+    .orb-paused .orb-container {
+      animation-play-state: paused;
+    }
+
+    .orb-controls {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.8em;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .orb-visualization:hover .orb-controls {
+      opacity: 1;
+    }
+
     /* Citation Badge */
     .citation-badge {
       display: inline-block;
@@ -1339,6 +1400,10 @@
       .collaboration-logo img {
         width: 100px;
       }
+
+      .orb-visualization {
+        height: 250px;
+      }
     }
   </style>
 </head>
@@ -1478,9 +1543,22 @@
             </a>
           </h4>
         </div>
+
+        <!-- NEW ORB VISUALIZATION CARD -->
+        <div class="ingredient-card exhale-section" id="orb-card">
+          <div class="orb-visualization" id="orbViz">
+            <div class="orb-container" id="orbContainer"></div>
+            <div class="orb-controls">Tap to pause/play</div>
+          </div>
+          <h4>Kuramoto Oscillator Dynamics</h4>
+          <p>Coupled oscillators with nearest-neighbor synchronization create emergent geometric patterns during breath retention phases.</p>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- REST OF THE SECTIONS CONTINUE AS IN YOUR ORIGINAL HTML -->
+  <!-- ... (I'll continue with the remaining sections in the next part) ... -->
 
   <section id="team">
     <div class="section-content">
@@ -1818,16 +1896,274 @@
   </section>
 
   <script>
+    // ORB VISUALIZATION SCRIPT
+    (function() {
+      const RADIUS_MIN = 80;
+      const RADIUS_MAX = 140;
+      const BREATH_CYCLE = 12000;
+      const PARTICLE_SIZE = 12;
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const SUBDIVISIONS = isMobile ? 2 : 3; // Fewer particles on mobile
+      
+      const container = document.getElementById('orbContainer');
+      const vizElement = document.getElementById('orbViz');
+      let isPaused = false;
+      
+      // Generate icosphere
+      function generateIcosphere(subdivisions) {
+        const vertices = [];
+        const t = (1 + Math.sqrt(5)) / 2;
+        
+        const v = [
+          [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+          [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+          [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]
+        ].map(p => {
+          const len = Math.sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
+          return [p[0]/len, p[1]/len, p[2]/len];
+        });
+        
+        vertices.push(...v);
+        
+        let faces = [
+          [0,11,5], [0,5,1], [0,1,7], [0,7,10], [0,10,11],
+          [1,5,9], [5,11,4], [11,10,2], [10,7,6], [7,1,8],
+          [3,9,4], [3,4,2], [3,2,6], [3,6,8], [3,8,9],
+          [4,9,5], [2,4,11], [6,2,10], [8,6,7], [9,8,1]
+        ];
+        
+        for (let s = 0; s < subdivisions; s++) {
+          const newFaces = [];
+          const midCache = new Map();
+          
+          const getMid = (i1, i2) => {
+            const key = i1 < i2 ? `${i1}-${i2}` : `${i2}-${i1}`;
+            if (midCache.has(key)) return midCache.get(key);
+            
+            const v1 = vertices[i1];
+            const v2 = vertices[i2];
+            const mid = [
+              (v1[0] + v2[0]) / 2,
+              (v1[1] + v2[1]) / 2,
+              (v1[2] + v2[2]) / 2
+            ];
+            const len = Math.sqrt(mid[0]*mid[0] + mid[1]*mid[1] + mid[2]*mid[2]);
+            const normalized = [mid[0]/len, mid[1]/len, mid[2]/len];
+            
+            const idx = vertices.length;
+            vertices.push(normalized);
+            midCache.set(key, idx);
+            return idx;
+          };
+          
+          faces.forEach(([a, b, c]) => {
+            const ab = getMid(a, b);
+            const bc = getMid(b, c);
+            const ca = getMid(c, a);
+            newFaces.push([a, ab, ca], [b, bc, ab], [c, ca, bc], [ab, bc, ca]);
+          });
+          
+          faces = newFaces;
+        }
+        
+        return vertices;
+      }
+      
+      const vertices = generateIcosphere(SUBDIVISIONS);
+      
+      const oscillators = vertices.map((pos, i) => {
+        const particle = document.createElement('div');
+        particle.className = 'orb-particle';
+        particle.style.width = PARTICLE_SIZE + 'px';
+        particle.style.height = PARTICLE_SIZE + 'px';
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        container.appendChild(particle);
+        
+        const rotationY = Math.atan2(pos[0], pos[2]) * (180 / Math.PI);
+        const rotationX = -Math.asin(pos[1]) * (180 / Math.PI);
+        
+        const spatialFreq = 0.15 * Math.sin(pos[0] * 5) * Math.cos(pos[1] * 5);
+        const randomFreq = (Math.random() - 0.5) * 0.12;
+        
+        return {
+          element: particle,
+          pos: pos,
+          phase: Math.random() * 2 * Math.PI,
+          naturalFreq: 0.15 + randomFreq + spatialFreq,
+          rotX: rotationX,
+          rotY: rotationY,
+          neighbors1: [],
+          neighbors2: []
+        };
+      });
+      
+      oscillators.forEach((osc, i) => {
+        const distances = oscillators
+          .map((other, j) => {
+            if (i === j) return { index: j, dist: Infinity };
+            const dx = osc.pos[0] - other.pos[0];
+            const dy = osc.pos[1] - other.pos[1];
+            const dz = osc.pos[2] - other.pos[2];
+            return { index: j, dist: dx*dx + dy*dy + dz*dz };
+          })
+          .sort((a, b) => a.dist - b.dist);
+        
+        osc.neighbors1 = distances.slice(0, 6).map(d => d.index);
+        osc.neighbors2 = distances.slice(6, 18).map(d => d.index);
+      });
+      
+      function couplingCurve1(t) {
+        const centered = (t - 0.5) * 2;
+        return 0.1 + 1.2 * (centered * centered);
+      }
+      
+      function couplingCurve2(t) {
+        const centered = (t - 0.5) * 2;
+        return 0.02 + 0.4 * (centered * centered);
+      }
+      
+      function updatePhases(dt, radiusNorm, time) {
+        const K1 = couplingCurve1(radiusNorm);
+        const K2 = couplingCurve2(radiusNorm);
+        
+        const wavePhase1 = time * 0.006;
+        const wavePhase2 = time * 0.01;
+        
+        const updates = new Float32Array(oscillators.length);
+        
+        for (let i = 0; i < oscillators.length; i++) {
+          const osc = oscillators[i];
+          let coupling = 0;
+          
+          for (let j = 0; j < osc.neighbors1.length; j++) {
+            const nIdx = osc.neighbors1[j];
+            coupling += K1 * Math.sin(oscillators[nIdx].phase - osc.phase);
+          }
+          
+          for (let j = 0; j < osc.neighbors2.length; j++) {
+            const nIdx = osc.neighbors2[j];
+            coupling += K2 * Math.sin(oscillators[nIdx].phase - osc.phase);
+          }
+          
+          const wave1 = 0.02 * Math.sin(osc.pos[0] * 8 + osc.pos[1] * 8 + wavePhase1);
+          const wave2 = 0.015 * Math.cos(osc.pos[0] * 6 - osc.pos[2] * 6 + wavePhase2);
+          const noise = (Math.random() - 0.5) * 0.025;
+          
+          updates[i] = osc.naturalFreq + coupling / 18 + wave1 + wave2 + noise;
+        }
+        
+        for (let i = 0; i < oscillators.length; i++) {
+          oscillators[i].phase += updates[i] * dt;
+          oscillators[i].phase %= (2 * Math.PI);
+        }
+      }
+      
+      const colorCache = new Array(1000);
+      for (let i = 0; i < 1000; i++) {
+        const hue = (i * 0.36) % 360;
+        const sat = 75 + 25 * Math.sin(i * 0.1);
+        const light = 60 + 20 * Math.cos(i * 0.08);
+        colorCache[i] = `hsl(${hue}, ${sat}%, ${light}%)`;
+      }
+      
+      function phaseToColor(phase) {
+        const idx = Math.floor((phase / (2 * Math.PI)) * 1000) % 1000;
+        return colorCache[idx];
+      }
+      
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+      
+      function updateVisuals(radius) {
+        for (let i = 0; i < oscillators.length; i++) {
+          const osc = oscillators[i];
+          
+          const x = radius * osc.pos[0];
+          const y = radius * osc.pos[1];
+          const z = radius * osc.pos[2];
+          
+          const el = osc.element;
+          el.style.color = phaseToColor(osc.phase);
+          el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateY(${osc.rotY}deg) rotateX(${osc.rotX}deg)`;
+        }
+      }
+      
+      let currentRadius = RADIUS_MIN;
+      const SMOOTHING = 0.15;
+      
+      function getBreathState(time) {
+        const cycleTime = time % BREATH_CYCLE;
+        const quarter = BREATH_CYCLE / 4;
+        
+        let targetProgress;
+        if (cycleTime < quarter) {
+          targetProgress = easeInOutCubic(cycleTime / quarter);
+        } else if (cycleTime < quarter * 2) {
+          targetProgress = 1.0;
+        } else if (cycleTime < quarter * 3) {
+          targetProgress = 1.0 - easeInOutCubic((cycleTime - quarter * 2) / quarter);
+        } else {
+          targetProgress = 0.0;
+        }
+        
+        return targetProgress;
+      }
+      
+      let lastTime = performance.now();
+      
+      function animate() {
+        if (isPaused) {
+          requestAnimationFrame(animate);
+          return;
+        }
+        
+        const currentTime = performance.now();
+        const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
+        lastTime = currentTime;
+        
+        const targetProgress = getBreathState(currentTime);
+        const targetRadius = RADIUS_MIN + (RADIUS_MAX - RADIUS_MIN) * targetProgress;
+        
+        currentRadius += (targetRadius - currentRadius) * SMOOTHING;
+        const radiusNorm = (currentRadius - RADIUS_MIN) / (RADIUS_MAX - RADIUS_MIN);
+        
+        updatePhases(dt * 5, radiusNorm, currentTime);
+        updateVisuals(currentRadius);
+        
+        requestAnimationFrame(animate);
+      }
+      
+      // Pause/play on click/tap
+      vizElement.addEventListener('click', function(e) {
+        isPaused = !isPaused;
+        vizElement.classList.toggle('orb-paused', isPaused);
+      });
+      
+      // Start animation when card is in view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !animate.running) {
+            animate.running = true;
+            animate();
+          }
+        });
+      });
+      
+      observer.observe(document.getElementById('orb-card'));
+    })();
+
+    // ORIGINAL WEBSITE SCRIPTS
     document.addEventListener('DOMContentLoaded', function() {
-      // Calculate and set mobile viewport height for iOS
       function setMobileVH() {
         const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--mobile-vh', `${vh}px`);
+        document.documentElement.style
+        .setProperty('--mobile-vh', `${vh}px`);
       }
       
       setMobileVH();
       
-      // Recalculate on resize and orientation change
       window.addEventListener('resize', setMobileVH);
       window.addEventListener('orientationchange', function() {
         setTimeout(setMobileVH, 100);
@@ -1900,7 +2236,6 @@
           }
         });
 
-        // Update both desktop and mobile menu active states
         navLinks.forEach(link => {
           link.classList.remove('active');
           if (link.getAttribute('href').slice(1) === current) {
